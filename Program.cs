@@ -1,4 +1,6 @@
-﻿Dictionary<char, int> precedence = new Dictionary<char, int>()
+﻿using Calculator;
+
+Dictionary<char, int> precedence = new Dictionary<char, int>()
 {
     {'+', 1},
     {'-', 1},
@@ -6,11 +8,15 @@
     {'/', 2}
 };
 
-Tuple<List<float>, List<char>> ParseInput(string input)
+Tuple<List<float>, List<Operation>> ParseInput(string input)
 {
     var numbers = new List<float>();
-    var operators = new List<char>();
-    var number = 0;
+    var operations = new List<Operation>();
+    var number = 0.0f;
+    var maxOperationPrecedence = precedence.Max(x => x.Value);
+    var currentPrecedence = 0;
+    var point = false;
+
     foreach (var c in input)
     {
         if (c == ' ')
@@ -19,6 +25,7 @@ Tuple<List<float>, List<char>> ParseInput(string input)
             {
                 numbers.Add(number);
                 number = -1;
+                point = false;
             }
         }
         else if (c == '+' || c == '-' || c == '*' || c == '/')
@@ -27,8 +34,21 @@ Tuple<List<float>, List<char>> ParseInput(string input)
             {
                 numbers.Add(number);
                 number = -1;
+                point = false;
             }
-            operators.Add(c);
+            operations.Add(new Operation(c, precedence[c] + currentPrecedence));
+        }
+        else if (c == '(')
+        {
+            currentPrecedence = currentPrecedence == 0 ? maxOperationPrecedence : currentPrecedence + 1;
+        }
+        else if (c == ')')
+        {
+            currentPrecedence--;
+        }
+        else if (c == '.')
+        {
+            point = true;
         }
         else
         {
@@ -36,26 +56,45 @@ Tuple<List<float>, List<char>> ParseInput(string input)
             {
                 number = 0;
             }
-            number = number * 10 + (c - '0');
+            if (point)
+            {
+                number += (c - '0') / 10.0f;
+            }
+            else
+            {
+                number = number * 10 + (c - '0');
+            }
         }
     }
     numbers.Add(number);
 
-    return new Tuple<List<float>, List<char>>(numbers, operators);
+    return new Tuple<List<float>, List<Operation>>(numbers, operations);
 }
 
-float Evaluate(List<float> numbers, List<char> operators)
+float Evaluate(List<float> numbers, List<Operation> operators)
 {
-    List<int> precedences = operators.Select(x => precedence[x]).Distinct().ToList();
-    precedences.Sort((x, y) => y.CompareTo(x));
+    SortedDictionary<int, int> precedences = new();
 
-    for (int i = 0; i < precedences.Count; i++)
+    for (int i = 0; i < operators.Count; i++)
     {
+        if (!precedences.ContainsKey(operators[i].Precedence))
+            precedences[operators[i].Precedence] = 0;
+
+        precedences[operators[i].Precedence]++;
+    }
+
+
+    foreach (var precedence in precedences.Reverse())
+    {
+        var currentPrecedence = precedence.Key;
+        var currentPrecedenceCount = precedence.Value;
         for (int j = 0; j < operators.Count; j++)
         {
-            if (precedences[i] == precedence[operators[j]])
+            if (currentPrecedenceCount == 0)
+                break;
+            if (precedence.Key == operators[j].Precedence)
             {
-                switch (operators[j])
+                switch (operators[j].Op)
                 {
                     case '+':
                         numbers[j] = numbers[j] + numbers[j + 1];
@@ -78,6 +117,7 @@ float Evaluate(List<float> numbers, List<char> operators)
                 }
                 numbers.RemoveAt(j + 1);
                 operators.RemoveAt(j);
+                currentPrecedenceCount--;
             }
         }
     }
