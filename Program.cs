@@ -1,4 +1,4 @@
-using Calculator;
+﻿using Calculator;
 
 Dictionary<char, int> precedence = new Dictionary<char, int>()
 {
@@ -59,64 +59,30 @@ List<Token> ParseInput(string input)
         }
     }
     if (number != -1)
-    tokens.Add(new Number(number));
+        tokens.Add(new Number(number));
 
     return tokens;
 }
 
-// TODO rewrite to Postfix Notation
-float Evaluate(List<float> numbers, List<Operation> operators)
+float Evaluate(List<Token> tokens)
 {
-    SortedDictionary<int, int> precedences = new();
+    var stack = new Stack<float>();
 
-    for (int i = 0; i < operators.Count; i++)
+    for (int i = 0; i < tokens.Count; i++)
     {
-        if (!precedences.ContainsKey(operators[i].Precedence))
-            precedences[operators[i].Precedence] = 0;
-
-        precedences[operators[i].Precedence]++;
-    }
-
-
-    foreach (var precedence in precedences.Reverse())
-    {
-        var currentPrecedence = precedence.Key;
-        var currentPrecedenceCount = precedence.Value;
-        for (int j = 0; j < operators.Count; j++)
+        if (tokens[i] is Number)
         {
-            if (currentPrecedenceCount == 0)
-                break;
-            if (precedence.Key == operators[j].Precedence)
-            {
-                switch (operators[j].Op)
-                {
-                    case '+':
-                        numbers[j] = numbers[j] + numbers[j + 1];
-                        break;
-
-                    case '-':
-                        numbers[j] = numbers[j] - numbers[j + 1];
-                        break;
-
-                    case '*':
-                        numbers[j] = numbers[j] * numbers[j + 1];
-                        break;
-
-                    case '/':
-                        numbers[j] = numbers[j] / numbers[j + 1];
-                        break;
-
-                    default:
-                        break;
-                }
-                numbers.RemoveAt(j + 1);
-                operators.RemoveAt(j);
-                currentPrecedenceCount--;
-            }
+            stack.Push(((Number)tokens[i]).NumberValue);
+        }
+        else if (tokens[i] is Operation)
+        {
+            var operation = (Operation)tokens[i];
+            var right = stack.Pop();
+            var left = stack.Pop();
+            stack.Push(operation.Calculate(left, right));
         }
     }
-    return numbers[0];
-
+    return stack.Pop();
 }
 
 Console.WriteLine("Enter an expression: ");
@@ -125,5 +91,10 @@ string? input = Console.ReadLine();
 
 var tokens = ParseInput(input ?? "");
 
+Console.WriteLine("Infix: [" + string.Join(", ", tokens) + "]");
 
+var postfix = InfixToPostfixConverter.Convert(tokens);
 
+Console.WriteLine("Postfix: [" + string.Join(", ", postfix)+ "]");
+
+Console.WriteLine("Result: " + Evaluate(postfix));
