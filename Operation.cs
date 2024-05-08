@@ -1,14 +1,14 @@
 namespace Calculator;
 
-struct Operation
+class Operation : Token
 {
-    public Operation(char op, int precedence)
+    public Operation(char op, int precedence) : base(op.ToString())
     {
         Op = op;
         Precedence = precedence;
     }
     public char Op { get; }
-    public int Precedence { get; }
+    public int Precedence { get; set; }
 
     public override string ToString()
     {
