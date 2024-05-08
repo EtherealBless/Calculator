@@ -1,4 +1,4 @@
-﻿using Calculator;
+using Calculator;
 
 Dictionary<char, int> precedence = new Dictionary<char, int>()
 {
@@ -11,7 +11,7 @@ Dictionary<char, int> precedence = new Dictionary<char, int>()
 List<Token> ParseInput(string input)
 {
     var tokens = new List<Token>();
-    var number = 0.0f;
+    var number = -1f;
     var maxOperationPrecedence = precedence.Max(x => x.Value);
     var point = false;
 
@@ -31,10 +31,12 @@ List<Token> ParseInput(string input)
             {
                 number = number * 10 + (c - '0');
             }
+            continue;
         }
         else if (c == '.')
         {
             point = true;
+            continue;
         }
         if (number != -1)
         {
@@ -56,6 +58,7 @@ List<Token> ParseInput(string input)
             tokens.Add(new RightParenthesis());
         }
     }
+    if (number != -1)
     tokens.Add(new Number(number));
 
     return tokens;
