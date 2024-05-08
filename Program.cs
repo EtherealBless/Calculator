@@ -8,49 +8,16 @@ Dictionary<char, int> precedence = new Dictionary<char, int>()
     {'/', 2}
 };
 
-Tuple<List<float>, List<Operation>> ParseInput(string input)
+List<Token> ParseInput(string input)
 {
-    var numbers = new List<float>();
-    var operations = new List<Operation>();
+    var tokens = new List<Token>();
     var number = 0.0f;
     var maxOperationPrecedence = precedence.Max(x => x.Value);
-    var currentPrecedence = 0;
     var point = false;
 
     foreach (var c in input)
     {
-        if (c == ' ')
-        {
-            if (number != -1)
-            {
-                numbers.Add(number);
-                number = -1;
-                point = false;
-            }
-        }
-        else if (c == '+' || c == '-' || c == '*' || c == '/')
-        {
-            if (number != -1)
-            {
-                numbers.Add(number);
-                number = -1;
-                point = false;
-            }
-            operations.Add(new Operation(c, precedence[c] + currentPrecedence));
-        }
-        else if (c == '(')
-        {
-            currentPrecedence = currentPrecedence == 0 ? maxOperationPrecedence : currentPrecedence + 1;
-        }
-        else if (c == ')')
-        {
-            currentPrecedence--;
-        }
-        else if (c == '.')
-        {
-            point = true;
-        }
-        else
+        if (c >= '0' && c <= '9')
         {
             if (number == -1)
             {
@@ -65,12 +32,36 @@ Tuple<List<float>, List<Operation>> ParseInput(string input)
                 number = number * 10 + (c - '0');
             }
         }
-    }
-    numbers.Add(number);
+        else if (c == '.')
+        {
+            point = true;
+        }
+        if (number != -1)
+        {
+            tokens.Add(new Number(number));
+            number = -1;
+            point = false;
+        }
 
-    return new Tuple<List<float>, List<Operation>>(numbers, operations);
+        if (c == '+' || c == '-' || c == '*' || c == '/')
+        {
+            tokens.Add(new Operation(c, precedence[c]));
+        }
+        else if (c == '(')
+        {
+            tokens.Add(new LeftParenthesis());
+        }
+        else if (c == ')')
+        {
+            tokens.Add(new RightParenthesis());
+        }
+    }
+    tokens.Add(new Number(number));
+
+    return tokens;
 }
 
+// TODO rewrite to Postfix Notation
 float Evaluate(List<float> numbers, List<Operation> operators)
 {
     SortedDictionary<int, int> precedences = new();
@@ -129,20 +120,7 @@ Console.WriteLine("Enter an expression: ");
 
 string? input = Console.ReadLine();
 
-var (numbers, operators) = ParseInput(input ?? "");
+var tokens = ParseInput(input ?? "");
 
-for (int i = 0; i < numbers.Count; i++)
-{
-    Console.Write(numbers[i] + " ");
-}
 
-Console.WriteLine();
 
-for (int i = 0; i < operators.Count; i++)
-{
-    Console.Write(operators[i] + " ");
-}
-
-Console.WriteLine();
-
-Console.WriteLine(Evaluate(numbers, operators));
