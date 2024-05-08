@@ -1,6 +1,6 @@
 namespace Calculator;
 
-class Token
+public class Token
 {
     public Token(string tokenString)
     {
