@@ -8,4 +8,9 @@ class Number : Token
     }
 
     public float NumberValue { get; }
+
+    public override string ToString()
+    {
+        return NumberValue.ToString();
+    }
 }
