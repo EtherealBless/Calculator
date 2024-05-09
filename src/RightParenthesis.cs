@@ -2,7 +2,7 @@ namespace Calculator;
 
 class RightParenthesis : Operation
 {
-    public RightParenthesis(char op, int precedence) : base(op, precedence)
+    public RightParenthesis(string op, int precedence) : base(op, precedence)
     {
     }
 

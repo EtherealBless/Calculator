@@ -2,7 +2,7 @@ namespace Calculator;
 
 public class Addition : Operation
 {
-    public Addition(char op, int precedence) : base(op, precedence)
+    public Addition(string op, int precedence) : base(op, precedence)
     {
     }
 

@@ -3,14 +3,14 @@ namespace Calculator;
 public class Calculator
 {
 
-    readonly Dictionary<char, Operation> Operations = new Dictionary<char, Operation>()
+    readonly Dictionary<string, Operation> Operations = new Dictionary<string, Operation>()
     {
-        {'+', new Addition('+', 1)},
-        {'-', new Subtraction('-', 1)},
-        {'*', new Multiplication('*', 2)},
-        {'/', new Division('/', 2)},
-        {'(', new LeftParenthesis('(', 0)},
-        {')', new RightParenthesis(')', 0)}
+        {"+", new Addition("+", 1)},
+        {"-", new Subtraction("-", 1)},
+        {"*", new Multiplication("*", 2)},
+        {"/", new Division("/", 2)},
+        {"(", new LeftParenthesis("(", 0)},
+        {")", new RightParenthesis(")", 0)}
     };
 
     public double Evaluate(List<Token> tokens)
@@ -36,15 +36,22 @@ public class Calculator
 
     public List<Token> ParseInput(string input)
     {
+        var currentToken = "";
         var tokens = new List<Token>();
         var number = -1f;
         var maxOperationPrecedence = Operations.Max(x => x.Value.Precedence);
         var point = false;
 
+
         foreach (var c in input)
         {
             if (c >= '0' && c <= '9')
             {
+                if (currentToken != "")
+                {
+                    tokens.Add(Operations[currentToken]);
+                    currentToken = "";
+                }
                 if (number == -1)
                 {
                     number = 0;
@@ -71,13 +78,23 @@ public class Calculator
                 point = false;
             }
 
-            if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')')
+            if (c == ' ')
             {
-                tokens.Add(Operations[c]);
+                if (currentToken != "")
+                {
+                    tokens.Add(Operations[currentToken]);
+                }
+                currentToken = "";
+            }
+            else
+            {
+                currentToken += c;
             }
         }
         if (number != -1)
             tokens.Add(new Number(number));
+        if (currentToken != "")
+            tokens.Add(Operations[currentToken]);
 
         return tokens;
     }

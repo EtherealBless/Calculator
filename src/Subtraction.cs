@@ -2,7 +2,7 @@ namespace Calculator;
 
 public class Subtraction : Operation
 {
-    public Subtraction(char op, int precedence) : base(op, precedence)
+    public Subtraction(string op, int precedence) : base(op, precedence)
     {
     }
 

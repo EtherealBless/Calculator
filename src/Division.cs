@@ -2,7 +2,7 @@ namespace Calculator;
 
 public class Division : Operation
 {
-    public Division(char op, int precedence) : base(op, precedence)
+    public Division(string op, int precedence) : base(op, precedence)
     {
     }
 
