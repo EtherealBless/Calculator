@@ -2,12 +2,12 @@ namespace Calculator;
 
 class Number : Token
 {
-    public Number(float number) : base(number.ToString())
+    public Number(double number) : base()
     {
         NumberValue = number;
     }
 
-    public float NumberValue { get; }
+    public double NumberValue { get; }
 
     public override string ToString()
     {

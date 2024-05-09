@@ -1,8 +1,8 @@
 namespace Calculator;
 
-class Operation : Token
+public abstract class Operation : Token
 {
-    public Operation(char op, int precedence) : base(op.ToString())
+    public Operation(char op, int precedence) : base()
     {
         Op = op;
         Precedence = precedence;
@@ -10,26 +10,7 @@ class Operation : Token
     public char Op { get; }
     public int Precedence { get; set; }
 
-    public float Calculate(float left, float right)
-    {
-        if (Op == '+')
-        {
-            return left + right;
-        }
-        if (Op == '-')
-        {
-            return left - right;
-        }
-        if (Op == '*')
-        {
-            return left * right;
-        }
-        if (Op == '/')
-        {
-            return left / right;
-        }
-        return 0;
-    }
+    public abstract double Calculate(params double[] args);
 
     public override string ToString()
     {

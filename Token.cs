@@ -2,10 +2,7 @@ namespace Calculator;
 
 public class Token
 {
-    public Token(string tokenString)
+    public Token()
     {
-        TokenString = tokenString;
     }
-
-    public string TokenString { get; }
 }

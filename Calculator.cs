@@ -3,12 +3,14 @@ namespace Calculator;
 public class Calculator
 {
 
-    readonly Dictionary<char, int> Precedence = new Dictionary<char, int>()
+    readonly Dictionary<char, Operation> Operations = new Dictionary<char, Operation>()
     {
-        {'+', 1},
-        {'-', 1},
-        {'*', 2},
-        {'/', 2}
+        {'+', new Addition('+', 1)},
+        {'-', new Subtraction('-', 1)},
+        {'*', new Multiplication('*', 2)},
+        {'/', new Division('/', 2)},
+        {'(', new LeftParenthesis('(', 0)},
+        {')', new RightParenthesis(')', 0)}
     };
 
     public double Evaluate(List<Token> tokens)
@@ -36,7 +38,7 @@ public class Calculator
     {
         var tokens = new List<Token>();
         var number = -1f;
-        var maxOperationPrecedence = Precedence.Max(x => x.Value);
+        var maxOperationPrecedence = Operations.Max(x => x.Value.Precedence);
         var point = false;
 
         foreach (var c in input)
@@ -69,17 +71,9 @@ public class Calculator
                 point = false;
             }
 
-            if (c == '+' || c == '-' || c == '*' || c == '/')
+            if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')')
             {
-                tokens.Add(new Operation(c, Precedence[c]));
-            }
-            else if (c == '(')
-            {
-                tokens.Add(new LeftParenthesis());
-            }
-            else if (c == ')')
-            {
-                tokens.Add(new RightParenthesis());
+                tokens.Add(Operations[c]);
             }
         }
         if (number != -1)
