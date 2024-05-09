@@ -21,7 +21,7 @@ public class InfixToPostfixConverter
                 operations.Push((Operation)infix[i]);
             }
             // if token is )
-            else if (infix[i] is Operation && ((Operation)infix[i]).Op == ')')
+            else if (infix[i] is Operation && (infix[i] is RightParenthesis))
             {
                 while (operations.Count > 0 && operations.Peek() is Operation && operations.Peek() is not LeftParenthesis){
                     postfix.Add(operations.Pop());
