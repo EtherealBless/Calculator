@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <AppContextSwitches>$(AppContextSwitches);DOTNET_MODIFIABLE_CLSET</AppContextSwitches>
+        <OutputType>Exe</OutputType>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="src\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Calculator\Calculator.csproj" />
+    </ItemGroup>
+
+</Project>

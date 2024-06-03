@@ -70,6 +70,10 @@ public class Lexer
                 {
                     return new Number(double.Parse(match.Value, CultureInfo.InvariantCulture));
                 }
+                if (operation.Value is Variable)
+                {
+                    return new Variable(match.Value);
+                }
                 return operation.Value;
             }
         }

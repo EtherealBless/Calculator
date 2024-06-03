@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main()
     {
-        Calculator calculator = new();
+        Evaluator calculator = new();
 
         Console.WriteLine("Enter an expression: ");
 
