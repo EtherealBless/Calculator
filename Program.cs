@@ -10,7 +10,9 @@ public class Program
 
         string? input = Console.ReadLine();
 
-        var tokens = calculator.ParseInput(input ?? "");
+        var lexer = new Lexer(input ?? "");
+
+        var tokens = lexer.Lex();
 
         Console.WriteLine("Infix: [" + string.Join(", ", tokens) + "]");
 
