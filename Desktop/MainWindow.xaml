@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         xmlns:local="clr-namespace:Desktop"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -10,9 +11,11 @@
         <TextBlock x:Name="tbTitle" HorizontalAlignment="Left" Margin="10,10,0,0" Text="Enter expression" TextAlignment="Center" VerticalAlignment="Top" Width="200"/>
         <TextBox x:Name="tbInputExpression" HorizontalAlignment="Left" Height="23" Margin="250,10,0,0" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="200"/>
         <TextBlock x:Name="tbTitle2" HorizontalAlignment="Left" Margin="10,40,0,0" Text="Enter variables (eg. x=2,y=3)" TextAlignment="Center" VerticalAlignment="Top" Width="200"/>
-        <TextBox x:Name="tbVariables" HorizontalAlignment="Left" Height="23" Margin="250,40,0,0" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="200"/> 
+        <TextBox x:Name="tbVariables" HorizontalAlignment="Left" Height="23" Margin="250,40,0,0" Text="" TextAlignment="Right" VerticalAlignment="Top" Width="200"/> 
         <TextBlock x:Name="tbTitle3" HorizontalAlignment="Left" Margin="10,70,0,0" Text="Result" TextAlignment="Center" VerticalAlignment="Top" Width="200"/>
         <TextBox x:Name="tbOutputExpression" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="250,70,0,0" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="200"/>   
-        <Button x:Name="btnCalculateButton" Content="Calculate" Click="btnCalculateButton_Click" HorizontalAlignment="Left" Margin="460,10,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnCalculate" Content="Calculate" Click="btnCalculate_Click" HorizontalAlignment="Left" Margin="460,10,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="btnDrawPlot" Content="Draw Plot" Click="btnDrawPlot_Click" HorizontalAlignment="Left" Margin="460,40,0,0" VerticalAlignment="Top" Width="75"/>
+        <ScottPlot:WpfPlot Margin="10,100,0,0" x:Name="WpfPlot1" />
     </Grid>
 </Window>
