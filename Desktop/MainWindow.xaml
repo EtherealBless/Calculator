@@ -6,7 +6,7 @@
         xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         xmlns:local="clr-namespace:Desktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Grafik-Rechner" Height="600" Width="800">
     <Grid>
         <TextBlock x:Name="tbTitle" HorizontalAlignment="Left" Margin="10,10,0,0" Text="Enter expression" TextAlignment="Center" VerticalAlignment="Top" Width="200"/>
         <TextBox x:Name="tbInputExpression" HorizontalAlignment="Left" Height="23" Margin="250,10,0,0" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="200"/>
@@ -16,6 +16,6 @@
         <TextBox x:Name="tbOutputExpression" IsReadOnly="True" HorizontalAlignment="Left" Height="23" Margin="250,70,0,0" Text="0" TextAlignment="Right" VerticalAlignment="Top" Width="200"/>   
         <Button x:Name="btnCalculate" Content="Calculate" Click="btnCalculate_Click" HorizontalAlignment="Left" Margin="460,10,0,0" VerticalAlignment="Top" Width="75"/>
         <Button x:Name="btnDrawPlot" Content="Draw Plot" Click="btnDrawPlot_Click" HorizontalAlignment="Left" Margin="460,40,0,0" VerticalAlignment="Top" Width="75"/>
-        <ScottPlot:WpfPlot Margin="10,100,0,0" x:Name="WpfPlot1" />
+        <ScottPlot:WpfPlot Margin="10,100,0,0" Width="750" Height="375" x:Name="pltPlot" />
     </Grid>
 </Window>

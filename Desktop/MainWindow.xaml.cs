@@ -5,12 +5,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Calculator;
 using ScottPlot.WPF;
+using ScottPlot;
 
 namespace Desktop;
 
@@ -19,7 +19,6 @@ namespace Desktop;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private readonly StringBuilder _sb = new();
     private Calculator.Calculator _calculator;
 
     private Dictionary<string, double> _variables = new Dictionary<string, double>()
@@ -29,10 +28,6 @@ public partial class MainWindow : Window
 
     private void InitializeCalculator()
     {
-        _sb.Clear();
-        _sb.Append(tbInputExpression.Text);
-        tbInputExpression.Text = _sb.ToString();
-
         var variables = new Dictionary<string, double>();
 
         if (tbVariables.Text != "")
@@ -57,9 +52,15 @@ public partial class MainWindow : Window
     private void btnDrawPlot_Click(object sender, RoutedEventArgs e)
     {
         InitializeCalculator();
-        WpfPlot1.Plot.Clear();
-        WpfPlot1.Plot.Add.Function(func);
-        WpfPlot1.Refresh();
+
+        pltPlot.Plot.Clear();
+        var crosshair = pltPlot.Plot.Add.Crosshair(0, 0);
+        crosshair.LineColor = Colors.Black;
+
+        var funcPlot = pltPlot.Plot.Add.Function(func);
+        funcPlot.LineColor = Colors.Red;
+
+        pltPlot.Refresh();
     }
     double func(double x)
     {
@@ -71,7 +72,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         _calculator = new Calculator.Calculator("");
-        // WpfPlot1.Plot.Axis(-10, 10, -10, 10);
-        // WpfPlot1.AxisZoom(2, 2);
+        pltPlot.Plot.Axes.SquareUnits();
+        var crosshair = pltPlot.Plot.Add.Crosshair(0, 0);
+        crosshair.LineColor = Colors.Black;
     }
 }
