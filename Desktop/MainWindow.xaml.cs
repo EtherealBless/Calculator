@@ -27,10 +27,11 @@ public partial class MainWindow : Window
 
     private void InitializeCalculator()
     {
-        _variables = new Dictionary<string, double>();
 
         if (tbVariables.Text != "")
         {
+            _variables = new Dictionary<string, double>();
+
             foreach (var variable in tbVariables.Text.Split(','))
             {
                 var name = variable.Split('=')[0];
