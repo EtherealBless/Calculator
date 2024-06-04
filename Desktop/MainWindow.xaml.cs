@@ -20,7 +20,6 @@ namespace Desktop;
 public partial class MainWindow : Window
 {
     private Calculator.Calculator _calculator;
-
     private Dictionary<string, double> _variables = new Dictionary<string, double>()
     {
         {"x", 0},
@@ -28,7 +27,7 @@ public partial class MainWindow : Window
 
     private void InitializeCalculator()
     {
-        var variables = new Dictionary<string, double>();
+        _variables = new Dictionary<string, double>();
 
         if (tbVariables.Text != "")
         {
@@ -36,10 +35,10 @@ public partial class MainWindow : Window
             {
                 var name = variable.Split('=')[0];
                 var value = double.Parse(variable.Split('=')[1], CultureInfo.InvariantCulture);
-                variables.Add(name, value);
+                _variables.Add(name, value);
             }
-        }
 
+        }
         _calculator = new Calculator.Calculator(tbInputExpression.Text);
     }
 
@@ -72,7 +71,9 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         _calculator = new Calculator.Calculator("");
+        pltPlot.Plot.Axes.SetLimits(-10, 10, -5, 5);
         pltPlot.Plot.Axes.SquareUnits();
+
         var crosshair = pltPlot.Plot.Add.Crosshair(0, 0);
         crosshair.LineColor = Colors.Black;
     }

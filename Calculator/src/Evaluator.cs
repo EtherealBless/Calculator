@@ -80,6 +80,6 @@ public class Evaluator
     public double EvaluateCompiled(Dictionary<string, double> variables)
     {
         _variables = variables;
-        return Evaluate(_compiledTokens);
+        return EvaluateWithVariables(_compiledTokens, _variables);
     }
 }
