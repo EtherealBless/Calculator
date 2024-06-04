@@ -26,6 +26,7 @@ public class Lexer
         {@"^sqrt", new Sqrt("sqrt", 3)},
         {@"^rt", new Root("root", 3)},
         {@"^log", new Log("log", 3)},
+        {@"^ln", new Ln("ln", 3)},
         {@"^[a-zA-Z]", new Variable("var", 4)}
     };
 
