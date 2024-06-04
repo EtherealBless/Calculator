@@ -33,16 +33,31 @@ public class Evaluator
                 {
                     args[j] = stack.Pop();
                 }
-                stack.Push(function.Calculate(args));
+                try
+                {
+                    stack.Push(function.Calculate(args));
+                }
+                catch
+                {
+                    stack.Push(double.NaN);
+                }
             }
             else if (tokens[i] is Operation)
             {
                 var operation = (Operation)tokens[i];
                 var right = stack.Pop();
                 var left = stack.Pop();
-                stack.Push(operation.Calculate(left, right));
+                try
+                {
+                    stack.Push(operation.Calculate(left, right));
+                }
+                catch
+                {
+                    stack.Push(double.NaN);
+                }
             }
         }
+        
         return stack.Pop();
     }
 
@@ -84,5 +99,5 @@ public class Evaluator
         return Evaluate(_compiledTokens);
     }
 
-    
+
 }

@@ -12,6 +12,10 @@ public class Division : Operation
         {
             throw new ArgumentException("Division requires 2 arguments");
         }
+        if (args[1] == 0)
+        {
+            return double.NaN;
+        }
         return args[0] / args[1];
     }
 }
