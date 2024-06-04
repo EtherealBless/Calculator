@@ -6,12 +6,12 @@ public class Evaluator
 {
 
     private List<Token> _compiledTokens;
-    private Dictionary<string, int> _variables;
+    private Dictionary<string, double> _variables;
 
     public Evaluator()
     {
         _compiledTokens = new List<Token>();
-        _variables = new Dictionary<string, int>();
+        _variables = new Dictionary<string, double>();
     }
 
     public double Evaluate(List<Token> tokens)
@@ -23,6 +23,11 @@ public class Evaluator
             if (tokens[i] is Number)
             {
                 stack.Push(((Number)tokens[i]).NumberValue);
+            }
+            else if (tokens[i] is Variable)
+            {
+                var variable = (Variable)tokens[i];
+                stack.Push(_variables[variable.Name]);
             }
             if (tokens[i] is Function)
             {
@@ -57,47 +62,24 @@ public class Evaluator
                 }
             }
         }
-        
+
         return stack.Pop();
     }
 
     public double EvaluateWithVariables(List<Token> tokens, Dictionary<string, double> variables)
     {
-        for (int i = 0; i < tokens.Count; i++)
-        {
-            if (tokens[i] is Variable variable)
-            {
-                tokens[i] = new Number(variables[variable.Name]);
-            }
-        }
 
         return Evaluate(tokens);
     }
 
     public void Compile(List<Token> tokens)
     {
-
         _compiledTokens = tokens;
-
-        for (int i = 0; i < _compiledTokens.Count; i++)
-        {
-            if (_compiledTokens[i] is Variable variable)
-            {
-                _variables[variable.Name] = i;
-            }
-        }
     }
-
 
     public double EvaluateCompiled(Dictionary<string, double> variables)
     {
-        for (int i = 0; i < variables.Count; i++)
-        {
-            _compiledTokens[_variables[variables.Keys.ElementAt(i)]] = new Number(variables[variables.Keys.ElementAt(i)]);
-        }
-
+        _variables = variables;
         return Evaluate(_compiledTokens);
     }
-
-
 }
